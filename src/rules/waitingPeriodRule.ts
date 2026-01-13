@@ -9,5 +9,6 @@ export function applyWaitingPeriodRule(plans: any[], hasDisease: boolean) {
         ...plan.reasons,
         'Lower waiting period suitable for pre-existing disease',
       ],
+      score: plan.score + 30,
     }));
 }

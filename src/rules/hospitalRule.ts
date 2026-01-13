@@ -16,5 +16,6 @@ export function applyHospitalRule(
           ? 'Supports private hospitals'
           : 'Suitable for government hospitals',
       ],
+      score: plan.score + 15,
     }));
 }

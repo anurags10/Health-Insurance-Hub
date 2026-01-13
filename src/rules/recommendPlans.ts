@@ -1,5 +1,5 @@
 import { getPlanByBudgets } from './getPlanByBudgets';
-import { sortPlanByPrice } from './sortPlanByPrice';
+import { sortPlanByScore } from './sortPlanByPrice';
 import { validateInput } from './validateInput';
 import { applyMaternityRule } from './maternityRule';
 import { applyHospitalRule } from './hospitalRule';
@@ -15,6 +15,7 @@ export async function recommendPlans(
   const plans = (await getPlanByBudgets(yearlyBudget)).map(plan => ({
     ...plan,
     reasons: ['Fits within your yearly budget'],
+    score: 35,
   }));
 
   const diseaseFilteredPlan = applyWaitingPeriodRule(
@@ -30,7 +31,7 @@ export async function recommendPlans(
     maternityRuleFilteredPlan,
     supportsPrivateHospital
   );
-  const sortedPlans = await sortPlanByPrice(privateHospitalFilteredPlan);
+  const sortedPlans = await sortPlanByScore(privateHospitalFilteredPlan);
 
   if (sortedPlans.length === 0) {
     return {

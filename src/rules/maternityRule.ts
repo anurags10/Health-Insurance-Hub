@@ -7,5 +7,6 @@ export function applyMaternityRule(plans: any[], maternityRequired: boolean) {
     .map(p => ({
       ...p,
       reasons: [...p.reasons, 'Covers maternity benefits'],
+      score: p.score + 20,
     }));
 }
