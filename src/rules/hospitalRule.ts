@@ -1,14 +1,20 @@
-type hospitalPreference = 'any' | 'no' | 'yes';
-
 export function applyHospitalRule(
   plans: any[],
-  supportPrivateHospitals: hospitalPreference
+  preference: 'any' | 'yes' | 'no'
 ) {
-  if (supportPrivateHospitals === 'any') {
-    return plans;
-  } else if (supportPrivateHospitals === 'no') {
-    return plans.filter(plan => plan.supportsPrivateHospital === false);
-  } else {
-    return plans.filter(plan => plan.supportsPrivateHospital === true);
-  }
+  if (preference === 'any') return plans;
+
+  const expected = preference === 'yes';
+
+  return plans
+    .filter(plan => plan.supportsPrivateHospital === expected)
+    .map(plan => ({
+      ...plan,
+      reasons: [
+        ...plan.reasons,
+        expected
+          ? 'Supports private hospitals'
+          : 'Suitable for government hospitals',
+      ],
+    }));
 }

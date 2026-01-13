@@ -12,12 +12,15 @@ export async function recommendPlans(
   diseases: string[]
 ) {
   validateInput(yearlyBudget, supportsPrivateHospital);
-  const plans = await getPlanByBudgets(yearlyBudget);
-  if (diseases.length !== 0) {
-    var diseaseFilteredPlan = applyWaitingPeriodRule(plans);
-  } else {
-    diseaseFilteredPlan = plans;
-  }
+  const plans = (await getPlanByBudgets(yearlyBudget)).map(plan => ({
+    ...plan,
+    reasons: ['Fits within your yearly budget'],
+  }));
+
+  const diseaseFilteredPlan = applyWaitingPeriodRule(
+    plans,
+    diseases.length > 0
+  );
 
   const maternityRuleFilteredPlan = applyMaternityRule(
     diseaseFilteredPlan,
