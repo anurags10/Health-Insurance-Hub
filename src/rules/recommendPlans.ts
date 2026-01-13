@@ -31,7 +31,7 @@ export async function recommendPlans(
     maternityRuleFilteredPlan,
     supportsPrivateHospital
   );
-  const sortedPlans = await sortPlanByScore(privateHospitalFilteredPlan);
+  const sortedPlans = sortPlanByScore(privateHospitalFilteredPlan);
 
   if (sortedPlans.length === 0) {
     return {
@@ -41,7 +41,8 @@ export async function recommendPlans(
   }
 
   return {
-    message: 'Recommended plans based on your budget',
-    sortedPlans,
+    success: true,
+    count: sortedPlans.length,
+    plans: sortedPlans,
   };
 }
