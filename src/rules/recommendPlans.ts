@@ -4,12 +4,8 @@ import { validateInput } from './validateInput';
 import { applyMaternityRule } from './maternityRule';
 import { applyHospitalRule } from './hospitalRule';
 import { applyWaitingPeriodRule } from './waitingPeriodRule';
-import { saveUserQueries } from '../db/queries/userQueries';
-import { saveRecommendations } from '../db/queries/recommendations';
 
 export async function recommendPlans(
-  age: number,
-  gender: string,
   annualIncome: number,
   maxYearlyPremium: number,
   diseases: string[],
@@ -17,16 +13,6 @@ export async function recommendPlans(
   maternityRequired: boolean
 ) {
   validateInput(annualIncome || maxYearlyPremium * 10, hospitalPreferences);
-
-  const userQueriesId = await saveUserQueries({
-    age,
-    gender,
-    annualIncome,
-    maxYearlyPremium,
-    diseases,
-    hospitalPreferences,
-    maternityRequired,
-  });
 
   const plans = (
     await getPlanByBudgets(annualIncome || maxYearlyPremium * 10)
@@ -50,7 +36,6 @@ export async function recommendPlans(
     hospitalPreferences
   );
   const sortedPlans = sortPlanByScore(privateHospitalFilteredPlan);
-  await saveRecommendations(userQueriesId, sortedPlans);
 
   if (sortedPlans.length === 0) {
     return {
@@ -60,8 +45,6 @@ export async function recommendPlans(
   }
 
   return {
-    success: true,
-    count: sortedPlans.length,
     plans: sortedPlans,
   };
 }

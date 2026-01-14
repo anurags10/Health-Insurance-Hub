@@ -7,7 +7,7 @@ export async function saveUserQueries(input: {
   annualIncome: number;
   maxYearlyPremium: number;
   diseases: string[];
-  hospitalPreferences: string;
+  supportsPrivateHospital: string;
   maternityRequired: boolean;
 }) {
   const [saved] = await db
@@ -18,7 +18,7 @@ export async function saveUserQueries(input: {
       annualIncome: input.annualIncome ?? input.maxYearlyPremium * 10,
       maxYearlyPremium: input.maxYearlyPremium,
       diseases: input.diseases,
-      hospitalPreferences: input.hospitalPreferences,
+      hospitalPreferences: input.supportsPrivateHospital,
       maternityRequired: input.maternityRequired,
     })
     .returning({ id: userQueries.id });
