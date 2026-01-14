@@ -5,16 +5,22 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const {
-      yearlyBudget,
-      maternityRequired,
-      supportsPrivateHospital,
+      age,
+      gender,
+      annualIncome,
+      maxYearlyPremium,
       diseases,
+      supportsPrivateHospital,
+      maternityRequired,
     } = body;
     const result = await recommendPlans(
-      yearlyBudget,
-      maternityRequired,
+      age,
+      gender,
+      annualIncome,
+      maxYearlyPremium,
+      diseases,
       supportsPrivateHospital,
-      diseases
+      maternityRequired
     );
     return NextResponse.json(result);
   } catch (error: any) {
